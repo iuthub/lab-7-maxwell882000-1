@@ -1,6 +1,25 @@
-<?php  
-
+<?php
+session_start();
 include('connection.php');
+$username = "";
+$email= "";
+$fullname = "";
+$passwords = "";
+$confirm_passwords = "";
+
+if ($_SERVER['REQUEST_METHOD']=='POST') {
+    $username = $_POST['username'];
+    $email= $_POST['email'];
+    $fullname = $_POST['fullname'];
+    $passwords = $_POST['passwords'];
+    $confirm_passwords = $_POST['confirm_passwords'];
+    $db = new PDO('mysql:host=localhost;dbname=world', 'db', 'qIYlszWCCsWgGasdGqN');
+    $add_account_stmt = $db->prepare('INSERT INTO accounts(username, fullname, email,passwords) VALUES(?,?,?,?)');
+    $add_account_stmt->execute(array($username, $fullname, $email, $passwords));
+    $_SESSION['username'] = $username;
+    $_SESSION['password'] = $passwords;
+    header('Location: index.php');
+}
 
 ?>
 
